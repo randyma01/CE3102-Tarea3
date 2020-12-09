@@ -1,0 +1,13 @@
+# authors: randy, karla, fiorella, cristian #
+# proj: ce3102-tarea3 #
+
+# misc #
+.idea
+.idea/
+.vscode
+octave-workspace
+**/.DS_Store
+.DS_Store
+
+
+# ------------------------- #
