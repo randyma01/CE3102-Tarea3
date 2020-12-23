@@ -59,7 +59,7 @@ root_title = Label(main_canva, text="Calculadora de Integrales Definidas", bg="#
 root_title.place(x=150, y=25)
 
 # image integrals #
-image_integ = load_image("imgs/unnamed.png")
+image_integ = load_image("imgs/integ_1.png")
 img = Label(main_canva, image=image_integ, bg="#FFFFFF")
 img.place(x=230, y=65)
 
