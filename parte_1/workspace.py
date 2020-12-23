@@ -9,6 +9,7 @@ TODO: Encabezado
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
+from sympy import *
 
 
 # ------------------------------------------------------------------- #
@@ -26,6 +27,10 @@ def load_image(file):
     return image
 
 
+# ------------------------------------------------------------------- #
+#                             misc funcs                              #
+# ------------------------------------------------------------------- #
+
 def help_me():
     """
     Printing function
@@ -33,15 +38,99 @@ def help_me():
     print("Help me!")
 
 
-def show_answer():
-    ans_label.config(text="Answer Label")
+def get_a_entry():
+    """
+    Get entry a.
+    :return: A
+    """
+    a = str(a_entry.get())
+    return a
+
+
+def get_b_entry():
+    """
+    Get entry b.
+    :return: b
+    """
+    b = str(b_entry.get())
+    return b
+
+
+def get_func_entry():
+    if func_entry.get() == "":
+        f1_eval = "Entry is empty."
+    else:
+        func = str(func_entry.get())
+        f1 = sympify(func)
+        f1_eval = str(f1.evalf(subs={'x': 2}))
+    return f1_eval
+
+
+def get_entry_po():
+    """
+    Get entry b.
+    :return: b
+    """
+    b = str(b_entry.get())
+    return b
+
+
+def get_points_entry():
+    """
+    Get entry points.
+    :return: points
+    """
+    points = points_entry.get()
+    return points
+
+
+# ############## #
+def simp_selection():
+    variable = simp_var.get()
+    option = ""
+    if variable == 1:
+        option = "trapecio"
+    elif variable == 2:
+        option = "simpson"
+    elif variable == 3:
+        option = "boole"
+
+    selection = " Opción seleccionada: " + option
+    simp_sel_label.config(text=selection)
+
+
+# ############## #
+
+
+# ############## #
+def comp_selection():
+    variable = comp_var.get()
+    option = ""
+    if variable == 1:
+        option = "trapecio compuesto"
+    elif variable == 2:
+        option = "simpson compuesto"
+    elif variable == 3:
+        option = "cuadraturas gaussianas"
+
+    selection = " Opción seleccionada: " + option
+    comp_sel_label.config(text=selection)
+
+
+# ############## #
+
+
+# ############## #
+def show():
+    f1 = get_func_entry()
+    ans_label.config(text=f1)
     err_label.config(text="Error Label")
+# ############## #
 
 
 # ------------------------------------------------------------------- #
 #                              main window                            #
 # ------------------------------------------------------------------- #
-
 # main window #
 root = Tk()
 root.title("ANPI")
@@ -104,39 +193,54 @@ tab_control.place(x=130, y=300)
 # ------------------------------------------------------------------- #
 #                           simple methods                            #
 # ------------------------------------------------------------------- #
+# variable for control #
+simp_var = IntVar()
+
 # tab for simple methods #
 sim_tab = Frame(tab_control, bg="#FFFFFF")
 tab_control.add(sim_tab, text='Métodos Simples')
 
 # simple trap radio button#
-sim_trap = Radiobutton(sim_tab, text="Trapecio", bg="#FFFFFF", value=1)
+sim_trap = Radiobutton(sim_tab, command=simp_selection, variable=simp_var, text="Trapecio", bg="#FFFFFF", value=1)
 sim_trap.place(x=200, y=50)
 
 # simple simp radio button #
-sim_simp = Radiobutton(sim_tab, text="Simpson", bg="#FFFFFF", value=2)
+sim_simp = Radiobutton(sim_tab, command=simp_selection, variable=simp_var, text="Simpson", bg="#FFFFFF", value=2)
 sim_simp.place(x=200, y=100)
 
 # boole radio button #
-sim_boole = Radiobutton(sim_tab, text="Regla de Boole", bg="#FFFFFF", value=3)
+sim_boole = Radiobutton(sim_tab, command=simp_selection, variable=simp_var, text="Regla de Boole", bg="#FFFFFF",
+                        value=3)
 sim_boole.place(x=200, y=150)
+
+# ############## #
+simp_sel_label = Label(tab_control, bg="#FFFFFF")
+simp_sel_label.place(x=200, y=250)
+# ############## #
 
 # ------------------------------------------------------------------- #
 #                             comp methods                            #
 # ------------------------------------------------------------------- #
+# variable for control #
+comp_var = IntVar()
+
 # tabs for comp methods #
 comp_tab = Frame(tab_control, bg="#FFFFFF")
 tab_control.add(comp_tab, text='Métodos Compuestos')
 
 # comp trap radio button#
-comp_trap = Radiobutton(comp_tab, text="Trapecio Compuesto", bg="#FFFFFF", value=1)
+comp_trap = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Trapecio Compuesto", bg="#FFFFFF",
+                        value=1)
 comp_trap.place(x=70, y=50)
 
 # comp simp radio button #
-comp_simp = Radiobutton(comp_tab, text="Simpson Compuesto", bg="#FFFFFF", value=2)
+comp_simp = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Simpson Compuesto", bg="#FFFFFF",
+                        value=2)
 comp_simp.place(x=70, y=100)
 
 # cuad gaus radio button #
-cuad_gau = Radiobutton(comp_tab, text="Cuadraturas Gaussianas", bg="#FFFFFF", value=3)
+cuad_gau = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Cuadraturas Gaussianas", bg="#FFFFFF",
+                       value=3)
 cuad_gau.place(x=70, y=150)
 
 # points entry #
@@ -144,6 +248,12 @@ points_label = Label(comp_tab, text="Puntos a Utilizar =", bg="#FFFFFF", fg="#00
 points_label.place(x=280, y=100)
 points_entry = Entry(comp_tab, width=5, bg="#FFFFFF", fg="#000000")
 points_entry.place(x=400, y=100)
+
+# ############## #
+comp_sel_label = Label(tab_control, bg="#FFFFFF")
+comp_sel_label.place(x=200, y=250)
+# ############## #
+
 
 # ------------------------------------------------------------------- #
 #                           division line                             #
@@ -156,9 +266,9 @@ line_2.place(x=10, y=630)
 #                              calculator                             #
 # ------------------------------------------------------------------- #
 # calculate button #
-calculate_button = Button(main_canva, command=show_answer, text="Calcular", bg="#FFFFFF", fg="#0000FF",
+calculate_button = Button(main_canva, command=show, borderwidth=0, text="Calcular", bg="#FFFFFF", fg="#0000FF",
                           font=("Courier", 20, "italic"))
-calculate_button.place(x=345, y=650)
+calculate_button.place(x=340, y=650)
 
 # approximation label #
 approx_label = Label(main_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
@@ -191,7 +301,7 @@ line_2.place(x=10, y=830)
 #                             help window                             #
 # ------------------------------------------------------------------- #
 # help button #
-help_button = Button(main_canva, command=help_me, text="Ayuda", bg="#FFFFFF", fg="#FF0000",
+help_button = Button(main_canva, command=help_me, text="Ayuda", borderwidth=0, bg="#FFFFFF", fg="#FF0000",
                      font=("Courier", 20, "italic"))
 help_button.place(x=345, y=850)
 
