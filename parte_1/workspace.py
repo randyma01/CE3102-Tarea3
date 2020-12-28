@@ -7,7 +7,7 @@ TODO: Encabezado
 # ------------------------------------------------------------------- #
 
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from sympy import *
 
@@ -18,8 +18,9 @@ from sympy import *
 
 def load_image(file):
     """
-    Loads and return the image.
-    :param file: name of the image
+    Receives the name of an image, loads it from the imgs/.
+    Then return the image.
+    :param file: string
     :return: image
     """
     load = Image.open(file)
@@ -27,105 +28,142 @@ def load_image(file):
     return image
 
 
-# ------------------------------------------------------------------- #
-#                             misc funcs                              #
-# ------------------------------------------------------------------- #
+def get_func_entry():
+    """
+    Get the entry of the 'function' as a string. Validates it.
+    Then return it as a symbolic function, using sympify()
+    from Sympy.
 
-def help_me():
+    If the entry is invalid, show message box.
+
+    Restriction: Only accepts functions with the variable 'x'.
+    :return: symbolic
     """
-    Printing function
-    """
-    print("Help me!")
+    func = str(func_entry.get())
+    if func == "":
+        messagebox.showinfo("¡Error!", "La entrada de la función no puede estar vacía.")
+        return
+    f_x = sympify(func)
+    return f_x
 
 
 def get_a_entry():
     """
-    Get entry a.
-    :return: A
+    Get entry of the value 'a' as a string. Validates it. Then return it as
+    a integer.
+
+    If the entry is invalid, show message box.
+    :return: int
     """
     a = str(a_entry.get())
+    if a == "":
+        messagebox.showinfo("¡Error!", "La entrada del valor 'a' no puede estar vacía.")
+        return
+    a = int(a)
     return a
 
 
 def get_b_entry():
     """
-    Get entry b.
-    :return: b
+    Get entry of the value 'b' as a string. Validates it. Then return it as
+    a integer.
+
+    If the entry is invalid, show message box.
+    :return: int
     """
     b = str(b_entry.get())
-    return b
-
-
-def get_func_entry():
-    if func_entry.get() == "":
-        f1_eval = "Entry is empty."
-    else:
-        func = str(func_entry.get())
-        f1 = sympify(func)
-        f1_eval = str(f1.evalf(subs={'x': 2}))
-    return f1_eval
-
-
-def get_entry_po():
-    """
-    Get entry b.
-    :return: b
-    """
-    b = str(b_entry.get())
+    if b == "":
+        messagebox.showinfo("¡Error!", "La entrada del valor 'b' no puede estar vacía.")
+        return
+    b = int(b)
     return b
 
 
 def get_points_entry():
     """
-    Get entry points.
-    :return: points
+    Get entry of the value 'points' as a string. Validates it. Then return it as
+    a integer.
+
+    If the entry is invalid, show message box.
+    :return: int
     """
-    points = points_entry.get()
+    points = str(b_entry.get())
+    if points == "":
+        messagebox.showinfo("¡Error!", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
+        return
+    points = int(points)
     return points
 
 
-# ############## #
 def simp_selection():
     variable = simp_var.get()
-    option = ""
-    if variable == 1:
-        option = "trapecio"
+    f_x = get_func_entry()
+    a = get_a_entry()
+    b = get_b_entry()
+    """if variable == 1:
+        ans = parte1_p2.trapecio(f_x, a, b)
+        show_results(ans[0], ans[1]) 
+        return
     elif variable == 2:
-        option = "simpson"
+        ans = parte1_p2.simpson(f_x, a, b)
+        show_results(ans[0], ans[1]) 
+        return
     elif variable == 3:
-        option = "boole"
-
-    selection = " Opción seleccionada: " + option
-    simp_sel_label.config(text=selection)
-
-
-# ############## #
+        ans = parte1_p2.boole(f_x, a, b)
+        show_results(ans[0], ans[1])
+        return"""
 
 
-# ############## #
 def comp_selection():
-    variable = comp_var.get()
-    option = ""
-    if variable == 1:
-        option = "trapecio compuesto"
-    elif variable == 2:
-        option = "simpson compuesto"
-    elif variable == 3:
-        option = "cuadraturas gaussianas"
+    variable = simp_var.get()
+    f_x = get_func_entry()
+    a = get_a_entry()
+    b = get_b_entry()
+    points = get_points_entry()
+    """if variable == 1:
+            ans = parte1_p2.trapecio_compuesto(f_x, a, b, points)
+            show_results(ans[0], ans[1]) 
+            return
+        elif variable == 2:
+            ans = parte1_p2.simpson_compuesto(f_x, a, b, points)
+            show_results(ans[0], ans[1]) 
+            return
+        elif variable == 3:
+            ans = parte1_p2.caudraturas_gaussianas(f_x, a, b, points)
+            show_results(ans[0], ans[1]) 
+            return"""
 
-    selection = " Opción seleccionada: " + option
-    comp_sel_label.config(text=selection)
 
-
-# ############## #
+def show_results(approx, error):
+    """
+    Display in the main window the values of the approximation and error
+    result inside each corresponding label.
+    :param approx: int
+    :param error: int
+    :return: None
+    """
+    app_label.config(text=approx)
+    err_label.config(text=error)
 
 
 # ############## #
 def show():
     f1 = get_func_entry()
-    ans_label.config(text=f1)
-    err_label.config(text="Error Label")
+    temp = f1.evalf(subs={'x': 2})
+    app_label.config(text=temp)
+
 # ############## #
+
+
+# ------------------------------------------------------------------- #
+#                              help window                            #
+# ------------------------------------------------------------------- #
+# help window #
+def help_me():
+    """
+    Printing function
+    """
+    print("Help me!")
 
 
 # ------------------------------------------------------------------- #
@@ -213,11 +251,6 @@ sim_boole = Radiobutton(sim_tab, command=simp_selection, variable=simp_var, text
                         value=3)
 sim_boole.place(x=200, y=150)
 
-# ############## #
-simp_sel_label = Label(tab_control, bg="#FFFFFF")
-simp_sel_label.place(x=200, y=250)
-# ############## #
-
 # ------------------------------------------------------------------- #
 #                             comp methods                            #
 # ------------------------------------------------------------------- #
@@ -230,17 +263,17 @@ tab_control.add(comp_tab, text='Métodos Compuestos')
 
 # comp trap radio button#
 comp_trap = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Trapecio Compuesto", bg="#FFFFFF",
-                        value=1)
+                        value=4)
 comp_trap.place(x=70, y=50)
 
 # comp simp radio button #
 comp_simp = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Simpson Compuesto", bg="#FFFFFF",
-                        value=2)
+                        value=5)
 comp_simp.place(x=70, y=100)
 
 # cuad gaus radio button #
 cuad_gau = Radiobutton(comp_tab, command=comp_selection, variable=comp_var, text="Cuadraturas Gaussianas", bg="#FFFFFF",
-                       value=3)
+                       value=6)
 cuad_gau.place(x=70, y=150)
 
 # points entry #
@@ -248,12 +281,6 @@ points_label = Label(comp_tab, text="Puntos a Utilizar =", bg="#FFFFFF", fg="#00
 points_label.place(x=280, y=100)
 points_entry = Entry(comp_tab, width=5, bg="#FFFFFF", fg="#000000")
 points_entry.place(x=400, y=100)
-
-# ############## #
-comp_sel_label = Label(tab_control, bg="#FFFFFF")
-comp_sel_label.place(x=200, y=250)
-# ############## #
-
 
 # ------------------------------------------------------------------- #
 #                           division line                             #
@@ -276,9 +303,9 @@ approx_label = Label(main_canva, text="Aproximación =", bg="#FFFFFF", fg="#0000
 approx_label.place(x=150, y=700)
 
 # calculated answer label #
-ans_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
+app_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
                   font=("Courier", 18))
-ans_label.place(x=345, y=700)
+app_label.place(x=345, y=700)
 
 # error label #
 error_label = Label(main_canva, text="Error =", bg="#FFFFFF", fg="#000000",
