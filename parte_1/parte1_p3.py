@@ -28,16 +28,15 @@ Fecha de Entrega:
 Semestre:
     * Semestre II - 2020
 """
-
 # ------------------------------------------------------------------- #
 #                             libraries                               #
 # ------------------------------------------------------------------- #
 
 import parte1_p2 as metodo
-from PIL import Image, ImageTk
 from tkinter import *
 from tkinter import ttk, messagebox
-from sympy import *
+from PIL import Image, ImageTk
+# from sympy import *
 
 
 # ------------------------------------------------------------------- #
@@ -57,48 +56,22 @@ def load_image(file):
 
 
 def get_func_entry():
-    """
-    Get the entry of the 'function' as a string. Validates it.
-    Then return it as a symbolic function, using sympify()
-    from Sympy.
-
-    If the entry is invalid, show message box.
-
-    Restriction: Only accepts functions with the variable 'x'.
-    :return: symbolic
-    """
     func = str(func_entry.get())
     if func == "":
         messagebox.showinfo("¡Error!", "La entrada de la función no puede estar vacía.")
         return
-    f_x = sympify(func)
-    return f_x
+    return func
 
 
 def get_a_entry():
-    """
-    Get entry of the value 'a' as a string. Validates it. Then return it as
-    a integer.
-
-    If the entry is invalid, show message box.
-    :return: int
-    """
-    a = str(a_entry.get())
+    a = a_entry.get()
     if a == "":
         messagebox.showinfo("¡Error!", "La entrada del valor 'a' no puede estar vacía.")
         return
-    a = int(a)
     return a
 
 
 def get_b_entry():
-    """
-    Get entry of the value 'b' as a string. Validates it. Then return it as
-    a integer.
-
-    If the entry is invalid, show message box.
-    :return: int
-    """
     b = str(b_entry.get())
     if b == "":
         messagebox.showinfo("¡Error!", "La entrada del valor 'b' no puede estar vacía.")
@@ -108,13 +81,6 @@ def get_b_entry():
 
 
 def get_points_entry():
-    """
-    Get entry of the value 'points' as a string. Validates it. Then return it as
-    a integer.
-
-    If the entry is invalid, show message box.
-    :return: int
-    """
     points = str(b_entry.get())
     if points == "":
         messagebox.showinfo("¡Error!", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
@@ -129,15 +95,15 @@ def simp_selection():
     a = get_a_entry()
     b = get_b_entry()
     if variable == 1:
-        ans = metodo.trapecio(f, a, b)
-        show_results(ans[0], ans[1]) 
+        ans = metodo.regla_trapecio(f, a, b)
+        show_results(ans[0], ans[1])
         return
     elif variable == 2:
-        ans = metodo.simpson(f, a, b)
-        show_results(ans[0], ans[1]) 
+        ans = metodo.regla_simpson(f, a, b)
+        show_results(ans[0], ans[1])
         return
     elif variable == 3:
-        ans = metodo.boole(f, a, b)
+        ans = metodo.regla_boole(f, a, b)
         show_results(ans[0], ans[1])
         return
 
@@ -149,15 +115,15 @@ def comp_selection():
     b = get_b_entry()
     points = get_points_entry()
     if variable == 1:
-        ans = metodo.trapecio_compuesto(f, a, b, points)
+        ans = metodo.regla_trapecio_compuesto(f, a, b, points)
         show_results(ans[0], ans[1])
         return
     elif variable == 2:
-        ans = metodo.simpson_compuesto(f, a, b, points)
+        ans = metodo.regla_simpson_compuesto(f, a, b, points)
         show_results(ans[0], ans[1])
         return
     elif variable == 3:
-        ans = metodo.caudraturas_gaussianas(f, a, b, points)
+        ans = metodo.cuadraturas_gausseana(f, a, b, points)
         show_results(ans[0], ans[1])
         return
 
@@ -176,9 +142,8 @@ def show_results(approx, error):
 
 # ############## #
 def show():
-    f1 = get_func_entry()
-    temp = f1.evalf(subs={'x': 2})
-    app_label.config(text=temp)
+    a = get_a_entry()
+    app_label.config(text=a)
 
 # ############## #
 
