@@ -1,14 +1,42 @@
 """
-TODO: Encabezado
+Instituto Tecnológico de Costa Rica
+
+Área Académica de Ingeniería en Computadores
+
+Curso:
+    * CE3102 - Análisis Numérico para Ingeniería
+
+Profesor:
+    * Juan Pablo Soto Quirós
+
+Estudiantes:
+    * Cristian Marín Murillo
+    * Fiorella Delgado León
+    * Karla Rivera Sanchez
+    * Randy Martínez Sandí
+
+Evaluación:
+    * Tarea 3
+
+Archivo:
+    * parte1_p3.py: módulo de la pegunta 3 del punto 1.
+    * Código de la interfaz gráfica (GUI) de la calculadora.
+
+Fecha de Entrega:
+    * Miércoles 27 de enero del 2021.
+
+Semestre:
+    * Semestre II - 2020
 """
 
 # ------------------------------------------------------------------- #
 #                             libraries                               #
 # ------------------------------------------------------------------- #
 
+import parte1_p2 as metodo
+from PIL import Image, ImageTk
 from tkinter import *
 from tkinter import ttk, messagebox
-from PIL import Image, ImageTk
 from sympy import *
 
 
@@ -97,41 +125,41 @@ def get_points_entry():
 
 def simp_selection():
     variable = simp_var.get()
-    f_x = get_func_entry()
+    f = get_func_entry()
     a = get_a_entry()
     b = get_b_entry()
-    """if variable == 1:
-        ans = parte1_p2.trapecio(f_x, a, b)
+    if variable == 1:
+        ans = metodo.trapecio(f, a, b)
         show_results(ans[0], ans[1]) 
         return
     elif variable == 2:
-        ans = parte1_p2.simpson(f_x, a, b)
+        ans = metodo.simpson(f, a, b)
         show_results(ans[0], ans[1]) 
         return
     elif variable == 3:
-        ans = parte1_p2.boole(f_x, a, b)
+        ans = metodo.boole(f, a, b)
         show_results(ans[0], ans[1])
-        return"""
+        return
 
 
 def comp_selection():
     variable = simp_var.get()
-    f_x = get_func_entry()
+    f = get_func_entry()
     a = get_a_entry()
     b = get_b_entry()
     points = get_points_entry()
-    """if variable == 1:
-            ans = parte1_p2.trapecio_compuesto(f_x, a, b, points)
-            show_results(ans[0], ans[1]) 
-            return
-        elif variable == 2:
-            ans = parte1_p2.simpson_compuesto(f_x, a, b, points)
-            show_results(ans[0], ans[1]) 
-            return
-        elif variable == 3:
-            ans = parte1_p2.caudraturas_gaussianas(f_x, a, b, points)
-            show_results(ans[0], ans[1]) 
-            return"""
+    if variable == 1:
+        ans = metodo.trapecio_compuesto(f, a, b, points)
+        show_results(ans[0], ans[1])
+        return
+    elif variable == 2:
+        ans = metodo.simpson_compuesto(f, a, b, points)
+        show_results(ans[0], ans[1])
+        return
+    elif variable == 3:
+        ans = metodo.caudraturas_gaussianas(f, a, b, points)
+        show_results(ans[0], ans[1])
+        return
 
 
 def show_results(approx, error):

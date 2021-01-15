@@ -1,13 +1,50 @@
-from symtable import Symbol
+"""
+Instituto Tecnológico de Costa Rica
 
-import sympy as sym
+Área Académica de Ingeniería en Computadores
+
+Curso:
+    * CE3102 - Análisis Numérico para Ingeniería
+
+Profesor:
+    * Juan Pablo Soto Quirós
+
+Estudiantes:
+    * Cristian Marín Murillo
+    * Fiorella Delgado León
+    * Karla Rivera Sanchez
+    * Randy Martínez Sandí
+
+Evaluación:
+    * Tarea 3
+
+Archivo:
+    * parte1_p2.py: módulo de la pregunta 2 del punto 1.
+    * Código de la implementación de las funciones que
+    aproximan el valor de una integral.
+
+Fecha de Entrega:
+    * Miércoles 27 de enero del 2021.
+
+Semestre:
+    * Semestre II - 2020
+"""
+
+# ------------------------------------------------------------------- #
+#                             librerias                               #
+# ------------------------------------------------------------------- #
+
 import numpy as np
+import sympy as sym
 from sympy import solve
+from symtable import Symbol
 
 x = sym.Symbol('x')
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                         regla del trapecio                          #
+# ------------------------------------------------------------------- #
 # Entradas:
 # Funcion evaluable f, valores iniciales a,b limites de la integral
 # Salidas:
@@ -38,7 +75,9 @@ def regla_trapecio(f, a, b):
     return [I, er]
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                     regla del trapecio compuesto                    #
+# ------------------------------------------------------------------- #
 # Entradas:
 # Funcion evaluable f, valores iniciales a,b limites de la integral, Cantidad de puntos N
 # Salidas:
@@ -75,7 +114,9 @@ def regla_trapecio_compuesto(f, a, b, N):
     return [I, er]
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                          regla de simpson                           #
+# ------------------------------------------------------------------- #
 # Entradas:
 # Funcion evaluable f, valores iniciales a,b limites de la integral
 # Salidas:
@@ -113,7 +154,9 @@ def regla_simpson(f, a, b):
     return [I, er]
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                      regla de simpson compuesto                     #
+# ------------------------------------------------------------------- #
 # Entradas:
 # Funcion evaluable f, valores iniciales a,b limites de la integral, Cantidad de puntos N
 # Salidas:
@@ -175,7 +218,9 @@ def regla_simpson_compuesto(f, a, b, N):
     return [I, er]
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                     cuadraturas guassianas                          #
+# ------------------------------------------------------------------- #
 # funcion auxiliar
 def polinomio(n):
     f = (x ** 2 - 1) ** n
@@ -225,7 +270,9 @@ def cuadraturas_gausseana(f, a, b, N):
     return [float(I), er]
 
 
-########################################################################################################################
+# ------------------------------------------------------------------- #
+#                          regla del boole                            #
+# ------------------------------------------------------------------- #
 # Entradas:
 # Funcion evaluable f, valores iniciales a,b limites de la integral
 # Salidas:
@@ -268,21 +315,3 @@ def regla_boole(f, a, b):
     # Obtener el error
     er = ((b - a) / N) ** 7 * (8 / 945) * max(s1)
     return [I, er]
-
-
-########################################################################################################################
-# Llamados a los metodos
-A = regla_trapecio('13/(7*x+11)', 1, 2)
-B = regla_trapecio_compuesto('13/(7*x+11)', 1, 2, 10)
-C = regla_simpson('13/(7*x+11)', 1, 2)
-D = regla_simpson_compuesto('13/(7*x+11)', 1, 2, 11)
-E = cuadraturas_gausseana('13/(7*x+11)', 1, 2, 10)
-F = regla_boole('13/(7*x+11)', 1, 2)
-
-# Mostrar los resultados
-print("Regla Trapecio ,", "Resultado: ", A[0], "Error: ", A[1])
-print("Regla Trapecio Compuesto ,", "Resultado: ", B[0], "Error: ", B[1])
-print("Regla Simpson,", "Resultado: ", C[0], "Error: ", C[1])
-print("Regla Simpson Compuesto,", "Resultado: ", D[0], "Error: ", D[1])
-print("Cuadraturas Gausseanas,", "Resultado: ", E[0], "Error: ", E[1])
-print("Regla de Boole,", "Resultado: ", F[0], "Error: ", F[1])
