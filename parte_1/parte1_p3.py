@@ -55,18 +55,25 @@ def load_image(file):
     return image
 
 
-# TODO: corregir posibles errores a la hora de obtener la funcion #
+# TODO: Corregir posibles errores a la hora de obtener la función. #
 def get_func_entry():
     func = func_entry.get()
 
     if func == "":
         messagebox.showinfo("¡Error!", "La entrada de la función no puede estar vacía.")
         return
+
     try:
+        if 'x' in func:
+            pass
+        else:
+            raise SyntaxError
         func_sym = sym.sympify(func)
         print(func_sym)
+    except SyntaxError:
+        messagebox.showinfo("¡Error!", "La función entrada únicamente debe contener la variable 'x'.")
     except Exception:
-        messagebox.showinfo("¡Error!", "La sintaxis de la entrada fue incorrecto. ")
+        messagebox.showinfo("¡Error!", "La sintaxis de la entrada fue incorrecto.")
 
     return func_sym
 
@@ -194,7 +201,7 @@ def calculate():
         approx_cal_label.config(text=ans[0])
         error_cal_label.config(text=ans[1])
 
-    # TODO: Validacion de metodo que solo recibe una cantidad impar de puntos #
+    # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. #
 
     elif method == "trapecio_compuesto":
         n = get_points_entry()
@@ -214,8 +221,6 @@ def calculate():
         approx_cal_label.config(text=ans[0])
         error_cal_label.config(text=ans[1])
 
-    return
-
 
 # ------------------------------------------------------------------- #
 #                              help window                            #
@@ -223,7 +228,7 @@ def calculate():
 # help window #
 def help_me():
     """
-    Printing function
+    TODO: Realizar ventana de ayuda.
     """
     print("Help me!")
 
