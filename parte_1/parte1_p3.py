@@ -64,7 +64,8 @@ def get_func_entry():
         return
     try:
         func_sym = sym.sympify(func)
-    except SyntaxError:
+        print(func_sym)
+    except Exception:
         messagebox.showinfo("¡Error!", "La sintaxis de la entrada fue incorrecto. ")
 
     return func_sym
