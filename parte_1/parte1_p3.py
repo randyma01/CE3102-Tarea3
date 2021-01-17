@@ -36,14 +36,12 @@ import parte1_p2 as metodo
 from tkinter import *
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
-
-# from sympy import *
+import sympy as sym
 
 
 # ------------------------------------------------------------------- #
 #                             misc funcs                              #
 # ------------------------------------------------------------------- #
-
 def load_image(file):
     """
     Receives the name of an image, loads it from the imgs/.
@@ -59,11 +57,17 @@ def load_image(file):
 
 # TODO: corregir posibles errores a la hora de obtener la funcion #
 def get_func_entry():
-    func = str(func_entry.get())
+    func = func_entry.get()
+
     if func == "":
         messagebox.showinfo("¡Error!", "La entrada de la función no puede estar vacía.")
         return
-    return func
+    try:
+        func_sym = sym.sympify(func)
+    except SyntaxError:
+        messagebox.showinfo("¡Error!", "La sintaxis de la entrada fue incorrecto. ")
+
+    return func_sym
 
 
 def get_a_entry():
