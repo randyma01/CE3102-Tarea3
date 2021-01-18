@@ -63,11 +63,10 @@ def have_only_x(entry):
     :param entry: string
     :return: boolean
     """
-    alphabet = "abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXZY"
-    special_char = "¡!¿?#$%&();ñÑ<>`~´'"
+    alphabet = "abcdefghijklmnñopqrstuvwyzABCDEFGHIJKLMNÑOPQRSTUVWZY"
 
     for x in entry:
-        if x in alphabet or special_char:
+        if x in alphabet:
             print("ERROR - Carácter inválido detectado:", x)
             return False
 
@@ -101,7 +100,7 @@ def get_func_entry():
         if not('x' in func and have_only_x(func)):
             raise SyntaxError
         func_sym = sym.sympify(func)
-        print("IMPRESION - Función Simbólica:", func_sym)
+        print("IMPRESIÓN - Función Simbólica:", func_sym)
         return func_sym
     except SyntaxError:
         messagebox.showinfo("Error: #2", "La función entrada únicamente debe contener la variable 'x'.")
@@ -278,8 +277,8 @@ main_canva.place(x=0, y=0)
 
 # title #
 root_title = Label(main_canva, text="Calculadora de Integrales Definidas", bg="#FFFFFF", fg="#000000",
-                   font=("Courier", 25, "bold"))
-root_title.place(x=150, y=25)
+                   font=("Times New Roman", 25))
+root_title.place(x=220, y=25)
 
 # image integrals #
 image_integ = load_image("imgs/integ_1.png")
@@ -290,22 +289,22 @@ img.place(x=230, y=65)
 #                               entries                               #
 # ------------------------------------------------------------------- #
 # function entry #
-func_label = Label(main_canva, text="f(x)= ", bg="#FFFFFF", fg="#000000",
-                   font=("Courier", 18))
+func_label = Label(main_canva, text="f (x) = ", bg="#FFFFFF", fg="#000000",
+                   font=("Times New Roman", 18))
 func_label.place(x=230, y=170)
 func_entry = Entry(main_canva, width=25, bg="#FFFFFF", fg="#000000")
 func_entry.place(x=300, y=170)
 
 # limit a entry #
 a_label = Label(main_canva, text="a =", bg="#FFFFFF", fg="#000000",
-                font=("Courier", 18))
+                font=("Times New Roman", 18))
 a_label.place(x=250, y=230)
 a_entry = Entry(main_canva, width=5, bg="#FFFFFF", fg="#000000")
 a_entry.place(x=300, y=230)
 
 # limit b entry #
 b_label = Label(main_canva, text="b =", bg="#FFFFFF", fg="#000000",
-                font=("Courier", 18))
+                font=("Times New Roman", 18))
 b_label.place(x=400, y=230)
 b_entry = Entry(main_canva, width=5, bg="#FFFFFF", fg="#000000")
 b_entry.place(x=450, y=230)
@@ -389,27 +388,27 @@ line_2.place(x=10, y=630)
 # ------------------------------------------------------------------- #
 # calculate button #
 calculate_button = Button(main_canva, command=calculate, borderwidth=0, text="Calcular", bg="#FFFFFF", fg="#0000FF",
-                          font=("Courier", 20, "italic"))
+                          font=("Times New Roman", 20))
 calculate_button.place(x=340, y=650)
 
 # approximation label #
 approx_title_label = Label(main_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
-                           font=("Courier", 18))
+                           font=("Times New Roman", 18))
 approx_title_label.place(x=150, y=700)
 
 # calculated answer label #
 approx_cal_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
-                         font=("Courier", 18))
+                         font=("Times New Roman", 18))
 approx_cal_label.place(x=345, y=700)
 
 # error label #
 error_title_label = Label(main_canva, text="Error =", bg="#FFFFFF", fg="#000000",
-                          font=("Courier", 18))
+                          font=("Times New Roman", 18))
 error_title_label.place(x=150, y=750)
 
 # calculated error label #
 error_cal_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
-                        font=("Courier", 18))
+                        font=("Times New Roman", 18))
 error_cal_label.place(x=345, y=750)
 
 # ------------------------------------------------------------------- #
@@ -424,7 +423,7 @@ line_2.place(x=10, y=830)
 # ------------------------------------------------------------------- #
 # help button #
 help_button = Button(main_canva, command=help_me, text="Ayuda", borderwidth=0, bg="#FFFFFF", fg="#FF0000",
-                     font=("Courier", 20, "italic"))
+                     font=("Times New Roman", 20, "italic"))
 help_button.place(x=345, y=850)
 
 # ------------------------------------------------------------------- #
