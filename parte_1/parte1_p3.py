@@ -63,16 +63,20 @@ def have_only_x(entry):
     :param entry: string
     :return: boolean
     """
-    alphabet = "abcdefghijklmnopqrstuvwyz"
+    alphabet = "abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWXZY"
+    special_char = "¡!¿?#$%&();ñÑ<>`~´'"
 
     for x in entry:
-        if x in alphabet:
+        if x in alphabet or special_char:
             print("ERROR - Carácter inválido detectado:", x)
             return False
 
     return True
 
 
+# ------------------------------------------------------------------- #
+#                             main funcs                              #
+# ------------------------------------------------------------------- #
 def get_func_entry():
     """
     Get entry of the value 'function'.
@@ -116,7 +120,7 @@ def get_a_entry():
     """
     a = a_entry.get()
 
-    if a == "":
+    if a == "" or None:
         messagebox.showinfo("Error: #4", "La entrada del valor 'a' no puede estar vacía.")
         return
 
@@ -138,7 +142,7 @@ def get_b_entry():
     """
     b = b_entry.get()
 
-    if b == "":
+    if b == "" or None:
         messagebox.showinfo("Error: #4", "La entrada del valor 'b' no puede estar vacía.")
         return
 
@@ -160,7 +164,7 @@ def get_points_entry():
     """
     points = str(points_entry.get())
 
-    if points == "":
+    if points == "" or None:
         messagebox.showinfo("Error: #4", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
         return
 
@@ -240,7 +244,7 @@ def calculate():
 
         elif method == "gaussianas":
             n = get_points_entry()
-            ans = metodo.cuadraturas_gausseana(f, a, b, n)
+            ans = metodo.cuadraturas_gaussianas(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
     except:

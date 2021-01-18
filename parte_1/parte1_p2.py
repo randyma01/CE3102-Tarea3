@@ -37,19 +37,32 @@ Semestre:
 import numpy as np
 import sympy as sym
 from sympy import solve
-from symtable import Symbol
 
+
+# ------------------------------------------------------------------- #
+#                         variable simbolica x                        #
+# ------------------------------------------------------------------- #
 x = sym.Symbol('x')
 
 
 # ------------------------------------------------------------------- #
 #                         regla del trapecio                          #
 # ------------------------------------------------------------------- #
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral
-# Salidas:
-# valor I, el cual el resultado de la integral, er: error de aproximacion
 def regla_trapecio(f, a, b):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral.
+
+    Realiza el cálculo de la integral 'I' mediante la Regla del Trapecio.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación, en una lista
+    como flotantes.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     h = b - a
     I = h / 2 * (f1.subs(x, a) + f1.subs(x, b))
@@ -70,7 +83,7 @@ def regla_trapecio(f, a, b):
         # evaluar en la segunda derivada en valor absoluto
         s1 = [abs(dx2.subs(x, s0))]
 
-    # Obtener el error
+    # obtener el error
     er = ((b - a) ** 3) / 12 * max(s1)
     return [I, er]
 
@@ -78,11 +91,23 @@ def regla_trapecio(f, a, b):
 # ------------------------------------------------------------------- #
 #                     regla del trapecio compuesto                    #
 # ------------------------------------------------------------------- #
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral, Cantidad de puntos N
-# Salidas:
-# lista [I,r], donde I es el resultado de la integral y er el error de aproximacion
 def regla_trapecio_compuesto(f, a, b, N):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral y cantidad de puntos 'N'.
+
+    Realiza el cálculo de la integral 'I' mediante la Regla del
+    Trapecio Compuesto.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación,
+    en una lista como flotantes.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :param N: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     h = (b - a) / (N - 1)
     I = 0
@@ -108,7 +133,7 @@ def regla_trapecio_compuesto(f, a, b, N):
         # evaluar en la segunda derivada en valor absoluto
         s1 = [abs(dx2.subs(x, s0))]
 
-    # Obtener el error
+    # obtener el error
     er = ((b - a) * h ** 2) / 12 * max(s1)
 
     return [I, er]
@@ -117,19 +142,29 @@ def regla_trapecio_compuesto(f, a, b, N):
 # ------------------------------------------------------------------- #
 #                          regla de simpson                           #
 # ------------------------------------------------------------------- #
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral
-# Salidas:
-# I: resultado de la integgral, er: error de aproximacion
 def regla_simpson(f, a, b):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral.
+
+    Realiza el cálculo de la integral 'I' mediante la Regla de Simpson.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación, en una
+    lista como flotantes.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     I = 0
     er = 0
-    # Definir los puntos evaluables
+    # definir los puntos evaluables
     x1 = a
     x2 = ((a + b) / 2)
     x3 = b
-    # Definir las integrales para el calculo del error.
+    # definir las integrales para el calculo del error.
     dx = sym.diff(f1, x)
     dx2 = sym.diff(dx, x)
     dx3 = sym.diff(dx2, x)
@@ -145,10 +180,10 @@ def regla_simpson(f, a, b):
         # evaluar en la cuarta derivada en valor absoluto
         s1 = [abs(dx4.subs(x, s0))]
 
-    # Calcular el valor de la integral
+    # calcular el valor de la integral
     I = ((b - a) / 6) * (f1.subs(x, x1) + 4 * f1.subs(x, x2) + f1.subs(x, x3))
 
-    # Calcular el error
+    # calcular el error
     er = (((b - a) ** 5) / 2880) * max(s1)
 
     return [I, er]
@@ -157,11 +192,23 @@ def regla_simpson(f, a, b):
 # ------------------------------------------------------------------- #
 #                      regla de simpson compuesto                     #
 # ------------------------------------------------------------------- #
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral, Cantidad de puntos N
-# Salidas:
-# I: resultado de la integgral, er: error de aproximacion
 def regla_simpson_compuesto(f, a, b, N):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral y cantidad de puntos 'N'.
+
+    Realiza el cálculo de la integral 'I' mediante la Regla de
+    Simpson Compuesto.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación, en
+    una lista como flotantes.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :param N: int
+    :return: [I, er]
+    """
     # N debe ser impar y mayor a 5
     if N <= 5 and N % 2 == 1:
         print("El valor de m debe ser un entero impar mayor o igual a 5")
@@ -170,7 +217,7 @@ def regla_simpson_compuesto(f, a, b, N):
     I = 0
     er = 0
     h = ((b - a) / (N - 1))
-    # Definir los puntos evaluables
+    # definir los puntos evaluables
     vec = np.arange(a, b + 0.1, h).tolist()
 
     vec_par = []
@@ -196,7 +243,7 @@ def regla_simpson_compuesto(f, a, b, N):
 
     I = (h / 3) * (f1.subs(x, a) + 2 * suma_pares + 4 * suma_impares + f1.subs(x, b))
 
-    # Definir las integrales para el calculo del error.
+    # definir las integrales para el calculo del error
     dx = sym.diff(f1, x)
     dx2 = sym.diff(dx, x)
     dx3 = sym.diff(dx2, x)
@@ -212,7 +259,7 @@ def regla_simpson_compuesto(f, a, b, N):
         # evaluar en la cuarta derivada en valor absoluto
         s1 = [abs(dx4.subs(x, s0))]
 
-    # Calcular el error
+    # calcular el error
     er = (((b - a) * h ** 4) / 180) * max(s1)
 
     return [I, er]
@@ -221,8 +268,13 @@ def regla_simpson_compuesto(f, a, b, N):
 # ------------------------------------------------------------------- #
 #                     cuadraturas guassianas                          #
 # ------------------------------------------------------------------- #
-# funcion auxiliar
 def polinomio(n):
+    """
+    Devuelve un polinomio.
+
+    :param n:
+    :return: y
+    """
     f = (x ** 2 - 1) ** n
     k = 1
     while k <= n:
@@ -232,11 +284,20 @@ def polinomio(n):
     return y
 
 
-# Entradas:
-# Funcion evaluable f y grado del polinomio N
-# Salidas:
-# I: resultado de la integral, error de aproximacion
 def cuadraturas_aux(f, N):
+    """
+    Recibe función evaluable 'f' y una cantidad de puntos 'N'.
+
+    Realiza el cálculo de la integral 'I' mediante la Regla de
+    las Cuadratruas Gaussianas.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación,
+    en una lista como flotantes.
+
+    :param f: sym
+    :param N: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     # P es el polinomio de grado N
     P = polinomio(N)
@@ -245,7 +306,7 @@ def cuadraturas_aux(f, N):
 
     I = 0
     er = 0
-    # Se ordenan las soluciones del polinomio
+    # se ordenan las soluciones del polinomio
     S = sorted(solve(P))
 
     for i in range(len(S)):
@@ -255,11 +316,24 @@ def cuadraturas_aux(f, N):
     return [float(I), er]
 
 
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral y grado de P(n)
-# Salidas:
-# I: resultado de la integral, error de aproximacion
-def cuadraturas_gausseana(f, a, b, N):
+def cuadraturas_gaussianas(f, a, b, N):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral y cantidad de puntos 'N'.
+
+    Hace invocación del método cuadraturas_aux(f, N), el cual le
+    envía 'f' y 'N' como parámetros. Este devuelve el valor 'I'
+    de la aproximación y el error 'er', como una lista de
+    flotantes.
+
+    Retorna 'I' y 'er'.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :param N: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     g1 = ((b - a) / 2) * f1.subs(x, ((b - a) * x + (b + a)) / 2)
 
@@ -273,11 +347,22 @@ def cuadraturas_gausseana(f, a, b, N):
 # ------------------------------------------------------------------- #
 #                          regla del boole                            #
 # ------------------------------------------------------------------- #
-# Entradas:
-# Funcion evaluable f, valores iniciales a,b limites de la integral
-# Salidas:
-# valor I, el cual el resultado de la integral, er: error de aproximacion
 def regla_boole(f, a, b):
+    """
+    Recibe función evaluable 'f', valores iniciales 'a' y 'b' como
+    límites de la integral.
+
+    Realiza el cálculo de la integral 'I' mediante el Regla de
+    Boole.
+
+    Retorna el valor 'I' y el error 'er' de tal aproximación, en
+    una lista como flotantes.
+
+    :param f: string
+    :param a: int
+    :param b: int
+    :return: [I, er]
+    """
     f1 = sym.sympify(f)
     N = 5
     h = (b - a) / (N - 1)
@@ -312,6 +397,6 @@ def regla_boole(f, a, b):
         # evaluar en la segunda derivada en valor absoluto
         s1 = [abs(dx6.subs(x, s0))]
 
-    # Obtener el error
+    # obtener el error
     er = ((b - a) / N) ** 7 * (8 / 945) * max(s1)
     return [I, er]
