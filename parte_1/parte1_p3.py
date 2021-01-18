@@ -55,6 +55,23 @@ def load_image(file):
     return image
 
 
+def have_only_x(entry):
+    """
+    Validates that the entry must only have the char 'x',
+    any other char is invalid.
+
+    :param entry: string
+    :return: boolean
+    """
+    letter = "abcdefghijklmnopqrstuvwyz"
+
+    for x in entry:
+        if x in letter:
+            print("it has invalid char:", x)
+            return False
+    return True
+
+
 # TODO: Corregir posibles errores a la hora de obtener la función. #
 def get_func_entry():
     func = func_entry.get()
@@ -71,9 +88,9 @@ def get_func_entry():
         func_sym = sym.sympify(func)
         print(func_sym)
     except SyntaxError:
-        messagebox.showinfo("¡Error!", "La función entrada únicamente debe contener la variable 'x'.")
+        messagebox.showinfo("¡Error #1!", "La función entrada únicamente debe contener la variable 'x'.")
     except Exception:
-        messagebox.showinfo("¡Error!", "La sintaxis de la entrada fue incorrecto.")
+        messagebox.showinfo("¡Error #2!", "La sintaxis de la entrada fue incorrecto.")
 
     return func_sym
 
