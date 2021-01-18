@@ -63,36 +63,46 @@ def have_only_x(entry):
     :param entry: string
     :return: boolean
     """
-    letter = "abcdefghijklmnopqrstuvwyz"
+    alphabet = "abcdefghijklmnopqrstuvwyz"
 
     for x in entry:
-        if x in letter:
-            print("it has invalid char:", x)
+        if x in alphabet:
+            print("ERROR - Carácter inválido detectado:", x)
             return False
+
     return True
 
 
-# TODO: Corregir posibles errores a la hora de obtener la función. #
 def get_func_entry():
+    """
+    Get entry of the value 'function'.
+
+    If the entry is empty, show message box with error.
+    If the entry is not does not contain a variable 'x',
+    show message box with error.
+    If the entry contains any variable rather than 'x',
+    show message box with error.
+    If the entry has invalid sym.sympify (symbolic) char,
+    show message message box with error.
+
+    :return: sym
+    """
     func = func_entry.get()
 
     if func == "":
-        messagebox.showinfo("¡Error!", "La entrada de la función no puede estar vacía.")
+        messagebox.showinfo("Error: #1", "La entrada de la función no puede estar vacía.")
         return
 
     try:
-        if 'x' in func:
-            pass
-        else:
+        if not('x' in func and have_only_x(func)):
             raise SyntaxError
         func_sym = sym.sympify(func)
-        print(func_sym)
+        print("IMPRESION - Función Simbólica:", func_sym)
+        return func_sym
     except SyntaxError:
-        messagebox.showinfo("¡Error #1!", "La función entrada únicamente debe contener la variable 'x'.")
-    except Exception:
-        messagebox.showinfo("¡Error #2!", "La sintaxis de la entrada fue incorrecto.")
-
-    return func_sym
+        messagebox.showinfo("Error: #2", "La función entrada únicamente debe contener la variable 'x'.")
+    except:
+        messagebox.showinfo("Error: #3", "La sintaxis de la entrada fue incorrecta.")
 
 
 def get_a_entry():
@@ -100,23 +110,21 @@ def get_a_entry():
     Get entry of the value 'a'.
 
     If the entry is empty, show message box with error.
-    If the entry is not a integer, show message box with error.
+    If the entry is not an integer, show message box with error.
 
     :return: int
     """
     a = a_entry.get()
 
     if a == "":
-        messagebox.showinfo("¡Error!", "La entrada del valor 'a' no puede estar vacía.")
+        messagebox.showinfo("Error: #4", "La entrada del valor 'a' no puede estar vacía.")
         return
 
     try:
         a = int(a)
+        return a
     except ValueError:
-        messagebox.showinfo("¡Error!", "La entrada del valor 'a' debe ser un número entero.")
-        return
-
-    return a
+        messagebox.showinfo("Error: #5", "La entrada del valor 'a' debe ser un número entero.")
 
 
 def get_b_entry():
@@ -124,23 +132,21 @@ def get_b_entry():
     Get entry of the value 'b'.
 
     If the entry is empty, show message box with error.
-    If the entry is not a integer, show message box with error.
+    If the entry is not an integer, show message box with error.
 
     :return: int
     """
     b = b_entry.get()
 
     if b == "":
-        messagebox.showinfo("¡Error!", "La entrada del valor 'b' no puede estar vacía.")
+        messagebox.showinfo("Error: #4", "La entrada del valor 'b' no puede estar vacía.")
         return
 
     try:
         b = int(b)
+        return b
     except ValueError:
-        messagebox.showinfo("¡Error!", "La entrada del valor 'b' debe ser un número entero.")
-        return
-
-    return b
+        messagebox.showinfo("Error: #5", "La entrada del valor 'b' debe ser un número entero.")
 
 
 def get_points_entry():
@@ -148,23 +154,21 @@ def get_points_entry():
     Get entry of the value 'points'.
 
     If the entry is empty, show message box with error.
-    If the entry is not a integer, show message box with error.
+    If the entry is not an integer, show message box with error.
 
     :return: int
     """
     points = str(points_entry.get())
 
     if points == "":
-        messagebox.showinfo("¡Error!", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
+        messagebox.showinfo("Error: #4", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
         return
 
     try:
         points = int(points)
+        return points
     except ValueError:
-        messagebox.showinfo("¡Error!", "La entrada del valor 'b' debe ser un número entero.")
-        return
-
-    return points
+        messagebox.showinfo("Error: #5", "La entrada del valor 'Puntos a Utilizar' debe ser un número entero.")
 
 
 def method_selection():
@@ -193,51 +197,55 @@ def method_selection():
     elif variable == 6:
         method = "gaussianas"
 
-    print(method)
+    print("IMPRESIÓN - Método seleccionado:", method)
     return method
 
 
 def calculate():
-    method = method_selection()
-    f = get_func_entry()
-    a = get_a_entry()
-    b = get_b_entry()
+    try:
+        method = method_selection()
+        f = get_func_entry()
+        a = get_a_entry()
+        b = get_b_entry()
+        print("IMPRESIÓN - Datos colectados (método, f, a, b): ", method, ",", f, ",", a, ",", b)
 
-    if method == "trapecio":
-        ans = metodo.regla_trapecio(f, a, b)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
+        if method == "trapecio":
+            ans = metodo.regla_trapecio(f, a, b)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
 
-    elif method == "simpson":
-        ans = metodo.regla_simpson(f, a, b)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
+        elif method == "simpson":
+            ans = metodo.regla_simpson(f, a, b)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
 
-    elif method == "boole":
-        ans = metodo.regla_boole(f, a, b)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
+        elif method == "boole":
+            ans = metodo.regla_boole(f, a, b)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
 
-    # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. #
+        # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. #
 
-    elif method == "trapecio_compuesto":
-        n = get_points_entry()
-        ans = metodo.regla_trapecio_compuesto(f, a, b, n)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
+        elif method == "trapecio_compuesto":
+            n = get_points_entry()
+            ans = metodo.regla_trapecio_compuesto(f, a, b, n)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
 
-    elif method == "simpson_compuesto":
-        n = get_points_entry()
-        ans = metodo.regla_simpson_compuesto(f, a, b, n)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
+        elif method == "simpson_compuesto":
+            n = get_points_entry()
+            ans = metodo.regla_simpson_compuesto(f, a, b, n)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
 
-    elif method == "gaussianas":
-        n = get_points_entry()
-        ans = metodo.cuadraturas_gausseana(f, a, b, n)
-        approx_cal_label.config(text=ans[0])
-        error_cal_label.config(text=ans[1])
-
+        elif method == "gaussianas":
+            n = get_points_entry()
+            ans = metodo.cuadraturas_gausseana(f, a, b, n)
+            approx_cal_label.config(text=ans[0])
+            error_cal_label.config(text=ans[1])
+    except:
+        print("EXCEPCIÓN - Error en la ejecucción de métodos.")
+        pass
 
 # ------------------------------------------------------------------- #
 #                              help window                            #
