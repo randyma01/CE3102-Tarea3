@@ -93,7 +93,8 @@ def get_func_entry():
     func = func_entry.get()
 
     if func == "":
-        messagebox.showinfo("Error: #1", "La entrada de la función no puede estar vacía.")
+        messagebox.showinfo(
+            "Error: #1", "La entrada de la función no puede estar vacía.")
         return
 
     try:
@@ -103,9 +104,11 @@ def get_func_entry():
         print("IMPRESIÓN - Función Simbólica:", func_sym)
         return func_sym
     except SyntaxError:
-        messagebox.showinfo("Error: #2", "La función entrada únicamente debe contener la variable 'x'.")
+        messagebox.showinfo(
+            "Error: #2", "La función entrada únicamente debe contener la variable 'x'.")
     except:
-        messagebox.showinfo("Error: #3", "La sintaxis de la entrada fue incorrecta.")
+        messagebox.showinfo(
+            "Error: #3", "La sintaxis de la entrada fue incorrecta.")
 
 
 def get_a_entry():
@@ -120,14 +123,16 @@ def get_a_entry():
     a = a_entry.get()
 
     if a == "" or None:
-        messagebox.showinfo("Error: #4", "La entrada del valor 'a' no puede estar vacía.")
+        messagebox.showinfo(
+            "Error: #4", "La entrada del valor 'a' no puede estar vacía.")
         return
 
     try:
         a = int(a)
         return a
     except ValueError:
-        messagebox.showinfo("Error: #5", "La entrada del valor 'a' debe ser un número entero.")
+        messagebox.showinfo(
+            "Error: #5", "La entrada del valor 'a' debe ser un número entero.")
 
 
 def get_b_entry():
@@ -142,14 +147,16 @@ def get_b_entry():
     b = b_entry.get()
 
     if b == "" or None:
-        messagebox.showinfo("Error: #4", "La entrada del valor 'b' no puede estar vacía.")
+        messagebox.showinfo(
+            "Error: #4", "La entrada del valor 'b' no puede estar vacía.")
         return
 
     try:
         b = int(b)
         return b
     except ValueError:
-        messagebox.showinfo("Error: #5", "La entrada del valor 'b' debe ser un número entero.")
+        messagebox.showinfo(
+            "Error: #5", "La entrada del valor 'b' debe ser un número entero.")
 
 
 def get_points_entry():
@@ -164,14 +171,16 @@ def get_points_entry():
     points = str(points_entry.get())
 
     if points == "" or None:
-        messagebox.showinfo("Error: #4", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
+        messagebox.showinfo(
+            "Error: #4", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
         return
 
     try:
         points = int(points)
         return points
     except ValueError:
-        messagebox.showinfo("Error: #5", "La entrada del valor 'Puntos a Utilizar' debe ser un número entero.")
+        messagebox.showinfo(
+            "Error: #5", "La entrada del valor 'Puntos a Utilizar' debe ser un número entero.")
 
 
 def method_selection():
@@ -210,7 +219,11 @@ def calculate():
         f = get_func_entry()
         a = get_a_entry()
         b = get_b_entry()
-        print("IMPRESIÓN - Datos colectados (método, f, a, b): ", method, ",", f, ",", a, ",", b)
+        print("IMPRESIÓN - Datos colectados (método, f, a, b): ",
+              method, ",", f, ",", a, ",", b)
+
+        if b <= a:
+            raise ValueError
 
         if method == "trapecio":
             ans = metodo.regla_trapecio(f, a, b)
@@ -246,9 +259,13 @@ def calculate():
             ans = metodo.cuadraturas_gaussianas(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
+    except ValueError:
+        messagebox.showinfo(
+            "Error: #6", "La entrada de 'a' no puede ser igual o mayor que la de 'b'.")
     except:
         print("EXCEPCIÓN - Error en la ejecucción de métodos.")
         pass
+
 
 # ------------------------------------------------------------------- #
 #                              help window                            #
@@ -258,6 +275,20 @@ def help_me():
     """
     TODO: Realizar ventana de ayuda.
     """
+    # secondary window #
+    help_window = Toplevel()
+    help_window.title("Guía de Uso")
+    help_window.minsize(500, 600)
+    help_window.resizable(width=NO, height=NO)
+
+    help_canva = Canvas(help_window, width=500, height=600, bg="#FFFFFF")
+    help_canva.place(x=0, y=0)
+
+    # title #
+    help_view = Label(help_canva, text="Guía de Ayuda", bg="#FFFFFF", fg="#000000",
+                      font=("Times New Roman", 25))
+    help_view.place(x=170, y=25)
+
     print("Help me!")
 
 
@@ -272,55 +303,55 @@ root.minsize(800, 900)
 root.resizable(width=NO, height=NO)
 
 # main canvas #
-main_canva = Canvas(root, width=800, height=900, bg="#FFFFFF")
-main_canva.place(x=0, y=0)
+root_canva = Canvas(root, width=800, height=900, bg="#FFFFFF")
+root_canva.place(x=0, y=0)
 
 # title #
-root_title = Label(main_canva, text="Calculadora de Integrales Definidas", bg="#FFFFFF", fg="#000000",
+root_title = Label(root_canva, text="Calculadora de Integrales Definidas", bg="#FFFFFF", fg="#000000",
                    font=("Times New Roman", 25))
 root_title.place(x=220, y=25)
 
 # image integrals #
 image_integ = load_image("imgs/integ_1.png")
-img = Label(main_canva, image=image_integ, bg="#FFFFFF")
+img = Label(root_canva, image=image_integ, bg="#FFFFFF")
 img.place(x=230, y=65)
 
 # ------------------------------------------------------------------- #
 #                               entries                               #
 # ------------------------------------------------------------------- #
 # function entry #
-func_label = Label(main_canva, text="f (x) = ", bg="#FFFFFF", fg="#000000",
+func_label = Label(root_canva, text="f (x) = ", bg="#FFFFFF", fg="#000000",
                    font=("Times New Roman", 18))
 func_label.place(x=230, y=170)
-func_entry = Entry(main_canva, width=25, bg="#FFFFFF", fg="#000000")
+func_entry = Entry(root_canva, width=25, bg="#FFFFFF", fg="#000000")
 func_entry.place(x=300, y=170)
 
 # limit a entry #
-a_label = Label(main_canva, text="a =", bg="#FFFFFF", fg="#000000",
+a_label = Label(root_canva, text="a =", bg="#FFFFFF", fg="#000000",
                 font=("Times New Roman", 18))
 a_label.place(x=250, y=230)
-a_entry = Entry(main_canva, width=5, bg="#FFFFFF", fg="#000000")
+a_entry = Entry(root_canva, width=5, bg="#FFFFFF", fg="#000000")
 a_entry.place(x=300, y=230)
 
 # limit b entry #
-b_label = Label(main_canva, text="b =", bg="#FFFFFF", fg="#000000",
+b_label = Label(root_canva, text="b =", bg="#FFFFFF", fg="#000000",
                 font=("Times New Roman", 18))
 b_label.place(x=400, y=230)
-b_entry = Entry(main_canva, width=5, bg="#FFFFFF", fg="#000000")
+b_entry = Entry(root_canva, width=5, bg="#FFFFFF", fg="#000000")
 b_entry.place(x=450, y=230)
 
 # ------------------------------------------------------------------- #
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 1 #
-line_1 = Frame(main_canva, width=780, height=1, bg="black")
+line_1 = Frame(root_canva, width=780, height=1, bg="black")
 line_1.place(x=10, y=280)
 
 # ------------------------------------------------------------------- #
 #                               tabs                                  #
 # ------------------------------------------------------------------- #
 # tabs #
-tab_control = ttk.Notebook(main_canva, width=500, height=250)
+tab_control = ttk.Notebook(root_canva, width=500, height=250)
 tab_control.place(x=130, y=300)
 
 # variable for selecting the radio button #
@@ -371,7 +402,8 @@ cuad_gau = Radiobutton(comp_tab, command=method_selection, variable=method_selec
 cuad_gau.place(x=70, y=150)
 
 # points entry #
-points_label = Label(comp_tab, text="Puntos a Utilizar =", bg="#FFFFFF", fg="#000000")
+points_label = Label(comp_tab, text="Puntos a Utilizar =",
+                     bg="#FFFFFF", fg="#000000")
 points_label.place(x=280, y=100)
 points_entry = Entry(comp_tab, width=5, bg="#FFFFFF", fg="#000000")
 points_entry.place(x=400, y=100)
@@ -380,34 +412,34 @@ points_entry.place(x=400, y=100)
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 2 #
-line_2 = Frame(main_canva, width=780, height=1, bg="black")
+line_2 = Frame(root_canva, width=780, height=1, bg="black")
 line_2.place(x=10, y=630)
 
 # ------------------------------------------------------------------- #
 #                              calculator                             #
 # ------------------------------------------------------------------- #
 # calculate button #
-calculate_button = Button(main_canva, command=calculate, borderwidth=0, text="Calcular", bg="#FFFFFF", fg="#0000FF",
+calculate_button = Button(root_canva, command=calculate, borderwidth=0, text="Calcular", bg="#FF0000", fg="#FF0000",
                           font=("Times New Roman", 20))
 calculate_button.place(x=340, y=650)
 
 # approximation label #
-approx_title_label = Label(main_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
+approx_title_label = Label(root_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
                            font=("Times New Roman", 18))
-approx_title_label.place(x=150, y=700)
+approx_title_label.place(x=220, y=700)
 
 # calculated answer label #
-approx_cal_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
+approx_cal_label = Label(root_canva, bg="#FFFFFF", fg="#000000",
                          font=("Times New Roman", 18))
 approx_cal_label.place(x=345, y=700)
 
 # error label #
-error_title_label = Label(main_canva, text="Error =", bg="#FFFFFF", fg="#000000",
+error_title_label = Label(root_canva, text="Error =", bg="#FFFFFF", fg="#000000",
                           font=("Times New Roman", 18))
-error_title_label.place(x=150, y=750)
+error_title_label.place(x=285, y=750)
 
 # calculated error label #
-error_cal_label = Label(main_canva, bg="#FFFFFF", fg="#000000",
+error_cal_label = Label(root_canva, bg="#FFFFFF", fg="#000000",
                         font=("Times New Roman", 18))
 error_cal_label.place(x=345, y=750)
 
@@ -415,15 +447,15 @@ error_cal_label.place(x=345, y=750)
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 2 #
-line_2 = Frame(main_canva, width=780, height=1, bg="black")
+line_2 = Frame(root_canva, width=780, height=1, bg="black")
 line_2.place(x=10, y=830)
 
 # ------------------------------------------------------------------- #
 #                             help window                             #
 # ------------------------------------------------------------------- #
 # help button #
-help_button = Button(main_canva, command=help_me, text="Ayuda", borderwidth=0, bg="#FFFFFF", fg="#FF0000",
-                     font=("Times New Roman", 20, "italic"))
+help_button = Button(root_canva, command=help_me, text="Ayuda", borderwidth=0, bg="#FFFFFF", fg="#0000FF",
+                     font=("Times New Roman", 20))
 help_button.place(x=345, y=850)
 
 # ------------------------------------------------------------------- #
