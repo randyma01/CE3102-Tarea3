@@ -43,7 +43,7 @@ A = metodo.regla_trapecio('13/(7*x+11)', 1, 2)
 B = metodo.regla_trapecio_compuesto('13/(7*x+11)', 1, 2, 10)
 C = metodo.regla_simpson('13/(7*x+11)', 1, 2)
 D = metodo.regla_simpson_compuesto('13/(7*x+11)', 1, 2, 11)
-E = metodo.cuadraturas_gausseana('13/(7*x+11)', 1, 2, 10)
+E = metodo.cuadraturas_gaussianas('13/(7*x+11)', 1, 2, 10)
 F = metodo.regla_boole('13/(7*x+11)', 1, 2)
 
 # impresion de los resultados #

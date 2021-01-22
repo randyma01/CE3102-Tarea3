@@ -222,6 +222,8 @@ def calculate():
         print("IMPRESIÓN - Datos colectados (método, f, a, b): ",
               method, ",", f, ",", a, ",", b)
 
+        # TODO: Validación del dominio de la función, para saber si se puede integrar. #
+
         if b <= a:
             raise ValueError
 
@@ -240,7 +242,7 @@ def calculate():
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
 
-        # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. #
+        # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. - (simpson_compuesto). #
 
         elif method == "trapecio_compuesto":
             n = get_points_entry()
