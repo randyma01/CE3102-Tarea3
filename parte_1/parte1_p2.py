@@ -241,7 +241,8 @@ def regla_simpson_compuesto(f, a, b, N):
     for i in range(simpar):
         suma_impares = suma_impares + f1.subs(x, vec_impar[i])
 
-    I = (h / 3) * (f1.subs(x, a) + 2 * suma_pares + 4 * suma_impares + f1.subs(x, b))
+    I = (h / 3) * (f1.subs(x, a) + 2 * suma_pares +
+                   4 * suma_impares + f1.subs(x, b))
 
     # definir las integrales para el calculo del error
     dx = sym.diff(f1, x)
@@ -310,10 +311,10 @@ def cuadraturas_aux(f, N):
     S = sorted(solve(P))
 
     for i in range(len(S)):
-        Wi = 2 / ((1 - (S[i]) ** 2) * p.subs(x, S[i]))
+        Wi = 2 / ((1 - (S[i]) ** 2) * (p.subs(x, S[i])) ** 2)
         I = I + (Wi * f1.subs(x, S[i]))
 
-    return [float(I), er]
+    return float(I)
 
 
 def cuadraturas_gaussianas(f, a, b, N):
@@ -338,8 +339,26 @@ def cuadraturas_gaussianas(f, a, b, N):
     g1 = ((b - a) / 2) * f1.subs(x, ((b - a) * x + (b + a)) / 2)
 
     res = cuadraturas_aux(g1, N)
-    I = float(res[0])
-    er = res[1]
+    I = float(res)
+
+    # definir las integrales para el calculo del error
+    dx = sym.diff(g1, x)
+    dx2 = sym.diff(dx, x)
+    dx3 = sym.diff(dx2, x)
+    dx4 = sym.diff(dx3, x)
+    dx5 = sym.diff(dx4, x)
+
+    # resolver f(5)(x) igual a cero
+    s0 = solve(dx5)
+
+    if not s0:
+        s1 = [abs(dx4.subs(x, -1)), abs(dx4.subs(x, 1))]
+    else:
+        # evaluar en la cuarta derivada en valor absoluto
+        s1 = [abs(dx4.subs(x, s0))]
+
+    # calcular el error
+    er = max(s1)/135
 
     return [float(I), er]
 
@@ -367,7 +386,7 @@ def regla_boole(f, a, b):
     N = 5
     h = (b - a) / (N - 1)
 
-    # Definir los puntos evaluables
+    # definir los puntos evaluables
     vec = np.arange(a, b + 0.1, h).tolist()
 
     I = ((b - a) / 90) * (7 * f1.subs(x, vec[0]) + 32 * f1.subs(x, vec[1]) + 12 * f1.subs(x, vec[2])
