@@ -32,12 +32,20 @@ Semestre:
 #                             libraries                               #
 # ------------------------------------------------------------------- #
 
+# methods for approx integrals#
 import parte1_p2 as metodo
+
+# gui tools #
 from tkinter import *
 from tkinter import ttk
+
+# image tools #
 from PIL import Image, ImageTk
+
+# sympy and math tools #
+from sympy import Symbol, S
+from sympy.sets import Interval
 from sympy.calculus.util import function_range
-from sympy import *
 import sympy as sym
 
 
@@ -86,22 +94,23 @@ def is_domain_valid(f, a, b):
     :return: boolean
     """
     x = Symbol('x')
-    if sym.Interval(a, b).intersection(function_range(f), x, S.Reals) != Interval(a, b):
-        print("IMPRESIÓN - Error: La función no es continua con el dominio.")
-        return False
 
-    return True
+    if Interval(a, b).intersection(function_range(f, x, S.Reals)) == Interval(a, b):
+        return True
+
+    # print("Error - La función no es continua con el dominio.")
+    return False
 
 
-def validate_points_simpson(num):
+def is_points_valid(n):
     """
     Validates that the entry must be bigger than 5 and
     odd.
 
-    :param num: int
+    :param n: int
     :return: boolean
     """
-    if num % 2 == 0 and 5 <= num:
+    if n % 2 != 0 and 5 <= n:
         return True
 
     return False
@@ -127,6 +136,7 @@ def get_func_entry():
     func = func_entry.get()
 
     if func == "":
+        print("Error - #1 ")
         text_error = "Error: #1. La entrada de la función no puede estar vacía."
         approx_cal_label.config(text=text_error)
         return
@@ -138,13 +148,17 @@ def get_func_entry():
         print("IMPRESIÓN - Función Simbólica:", func_sym)
         return func_sym
     except SyntaxError:
+        print("Error - #2 ")
         text_error = "Error: #2. La función entrada únicamente debe contener la variable 'x'."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
     except:
+        print("Error - #3 ")
         text_error = "Error: #3. La sintaxis de la entrada fue incorrecta."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
 
 
 def get_a_entry():
@@ -159,6 +173,7 @@ def get_a_entry():
     a = a_entry.get()
 
     if a == "" or None:
+        print("Error - #4 ")
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
@@ -168,9 +183,11 @@ def get_a_entry():
         a = float(a)
         return a
     except ValueError:
+        print("Error - #5 ")
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
 
 
 def get_b_entry():
@@ -185,6 +202,7 @@ def get_b_entry():
     b = b_entry.get()
 
     if b == "" or None:
+        print("Error - #4 ")
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
@@ -194,9 +212,11 @@ def get_b_entry():
         b = float(b)
         return b
     except ValueError:
+        print("Error - #5 ")
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
 
 
 def get_points_entry():
@@ -211,6 +231,7 @@ def get_points_entry():
     points = str(points_entry.get())
 
     if points == "" or None:
+        print("Error - #4 ")
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
@@ -220,9 +241,11 @@ def get_points_entry():
         points = int(points)
         return points
     except ValueError:
+        print("Error - #5 ")
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
 
 
 def method_selection():
@@ -266,13 +289,15 @@ def calculate():
         print("IMPRESIÓN - Datos colectados (método, f, a, b): ",
               method, ",", f, ",", a, ",", b)
 
-        #if not is_domain_valid(f, a, b):
-        #    text_error = "Error: #8. La función no es continua en el intervalo de intregación."
-        #    approx_cal_label.config(text=text_error)
-        #    error_cal_label.config(text="N/A")
-        #    return
+        if not is_domain_valid(f, a, b):
+            print("Error - #8 ")
+            text_error = "Error: #8. La función no es continua en el intervalo de intregación."
+            approx_cal_label.config(text=text_error)
+            error_cal_label.config(text="N/A")
+            return
 
         if b <= a:
+            print("Error - #6 ")
             text_error = "Error: #6. La entrada de 'a' no puede ser igual o mayor que la de 'b'."
             approx_cal_label.config(text=text_error)
             error_cal_label.config(text="N/A")
@@ -305,28 +330,35 @@ def calculate():
 
         elif method == "simpson_compuesto":
             n = get_points_entry()
-            if validate_points_simpson(n):
-                ans = metodo.regla_simpson_compuesto(f, a, b, n)
-                approx_cal_label.config(text=ans[0])
-                error_cal_label.config(text=ans[1])
-                return
-            else:
+            print("IMPRESIÓN - Cantidad de Puntos: ", n)
+            print(is_points_valid(n))
+            if not is_points_valid(n):
+                print("Error - #7 ")
                 text_error = "Error: #7. La entrada del valor 'puntos' debe ser un número mayor a cinco e impar."
                 approx_cal_label.config(text=text_error)
                 error_cal_label.config(text="N/A")
                 return
 
+            else:
+                ans = metodo.regla_simpson_compuesto(f, a, b, n)
+                approx_cal_label.config(text=ans[0])
+                error_cal_label.config(text=ans[1])
+                return
+
         elif method == "gaussianas":
             n = get_points_entry()
+            print("IMPRESIÓN - Cantidad de Puntos: ", n)
             ans = metodo.cuadraturas_gaussianas(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
             return
 
     except:
+        print("Error - #9 ")
         text_error = "Error: #9. No se posible calcular la respuesta. Vuelva a ingresar los datos."
         approx_cal_label.config(text=text_error)
         error_cal_label.config(text="N/A")
+        return
 
 
 # ------------------------------------------------------------------- #
@@ -360,8 +392,8 @@ def help_me():
 # main window #
 root = Tk()
 root.title("ANPI")
-root.geometry("1000x1000")
-root.minsize(1000, 1000)
+root.geometry("1000x910")
+root.minsize(1000, 910)
 root.resizable(width=NO, height=NO)
 
 # main canvas #

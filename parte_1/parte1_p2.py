@@ -34,9 +34,11 @@ Semestre:
 #                             librerias                               #
 # ------------------------------------------------------------------- #
 
+# sympy and math tools #
 import numpy as np
 import sympy as sym
 from sympy import solve
+from sympy import *
 
 
 # ------------------------------------------------------------------- #
