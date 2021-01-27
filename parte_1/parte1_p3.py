@@ -593,22 +593,22 @@ calculate_button.place(x=440, y=650)
 # approximation label #
 approx_title_label = Label(root_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
                            font=("Times New Roman", 18))
-approx_title_label.place(x=220, y=700)
+approx_title_label.place(x=240, y=700)
 
 # calculated answer label #
 approx_cal_label = Label(root_canva, bg="#FFFFFF", fg="#000000",
                          font=("Times New Roman", 18))
-approx_cal_label.place(x=345, y=700)
+approx_cal_label.place(x=375, y=700)
 
 # error label #
 error_title_label = Label(root_canva, text="Error =", bg="#FFFFFF", fg="#000000",
                           font=("Times New Roman", 18))
-error_title_label.place(x=285, y=750)
+error_title_label.place(x=305, y=750)
 
 # calculated error label #
 error_cal_label = Label(root_canva, bg="#FFFFFF", fg="#000000",
                         font=("Times New Roman", 18))
-error_cal_label.place(x=345, y=750)
+error_cal_label.place(x=375, y=750)
 
 # ------------------------------------------------------------------- #
 #                           division line                             #
