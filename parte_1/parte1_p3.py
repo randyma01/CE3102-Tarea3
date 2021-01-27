@@ -425,7 +425,7 @@ def help_me():
     authors_2.place(x=320, y=155)
 
     # author 3 #
-    authors_3 = Label(help_window, text="Karla Sanchez", font=("Times New Roman", 18))
+    authors_3 = Label(help_window, text="Karla Rivera", font=("Times New Roman", 18))
     authors_3.place(x=120, y=210)
 
     # author 4 #
