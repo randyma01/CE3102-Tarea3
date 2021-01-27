@@ -78,6 +78,16 @@ def open_documentation():
     webbrowser.open(url, new=new)
 
 
+def visit_repo():
+    """
+    Open online repository of the source code.
+    """
+    new = 1
+    url = "https://github.com/randyma01/CE3102-Tarea3/tree/master/parte_1"
+
+    webbrowser.open(url, new=new)
+
+
 def have_only_x(entry):
     """
     Validates that the entry must only have the char 'x',
@@ -155,7 +165,7 @@ def get_func_entry():
         return
 
     try:
-        if not('x' in func):  # and have_only_x(func)):
+        if not ('x' in func):  # and have_only_x(func)):
             raise SyntaxError
         func_sym = sym.sympify(func)
         print("IMPRESIÓN - Función Simbólica:", func_sym)
@@ -383,24 +393,40 @@ def help_me():
     About window. Contains information of the authors and link to
     see the documentation/manual of the program.
     """
+
+    # reading data to display #
+    text_file = open("about.txt", "r")
+    data = text_file.read()
+    text_file.close()
+
     # secondary window #
     help_window = Toplevel()
     help_window.title("Guía de Uso")
-    help_window.minsize(500, 600)
+    help_window.minsize(400, 400)
     help_window.resizable(width=NO, height=NO)
 
-    help_canva = Canvas(help_window, width=500, height=600, bg="#FFFFFF")
+    help_canva = Canvas(help_window, width=700, height=700, bg="#FFFFFF")
     help_canva.place(x=0, y=0)
 
     # title #
     help_view = Label(help_canva, text="Guía de Ayuda", bg="#FFFFFF", fg="#000000",
                       font=("Times New Roman", 25))
-    help_view.place(x=170, y=25)
+    help_view.place(x=120, y=25)
+
+    # text of the about information #
+    about_text = Text(help_canva, width=100, height=100, font=("Times New Roman", 18))
+    about_text.place(x=0, y=80)
+    about_text.insert(END, data)
 
     # documentation/manual #
     doc_button = Button(help_window, command=open_documentation, borderwidth=0, text="Ver Manual", bg="#FF0000",
-                        fg="#FF0000", font=("Times New Roman", 20))
-    doc_button.place(x=170, y=300)
+                        fg="#000000", font=("Times New Roman", 20))
+    doc_button.place(x=130, y=280)
+
+    # source code #
+    code_button = Button(help_window, command=visit_repo, borderwidth=0, text="Ver Código Fuente",
+                         bg="#FF0000", fg="#000000", font=("Times New Roman", 20))
+    code_button.place(x=110, y=330)
 
 
 # ------------------------------------------------------------------- #
