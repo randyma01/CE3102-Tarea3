@@ -1,7 +1,13 @@
 import sympy as sym
 
 x = sym.Symbol('x')
-
+print("hello world")
+func = 'sin(x)*2'
+func_sym = sym.sympify(func)
+print(func_sym)
+ans = (func_sym.subs(x, 2))
+print(ans)
+"""
 func = "13/(7*y*x+11)"
 
 
@@ -30,4 +36,5 @@ except SyntaxError:
     print("¡Error!", "La función entrada únicamente debe contener la variable 'x'.")
 except Exception:
     print("¡Error!", "La sintaxis de la entrada fue incorrecto.")
+"""
 

@@ -31,7 +31,6 @@ Semestre:
 # ------------------------------------------------------------------- #
 #                             libraries                               #
 # ------------------------------------------------------------------- #
-
 import parte1_p2 as metodo
 from tkinter import *
 from tkinter import ttk, messagebox
@@ -73,6 +72,21 @@ def have_only_x(entry):
     return True
 
 
+def validate_points_simpson(num):
+    """
+    Validates that the entry must be bigger than 5 and
+    odd.
+
+    :param num: int
+    :return: boolean
+    """
+
+    if num % 2 == 0 and 5 <= num:
+        return True
+
+    return False
+
+
 # ------------------------------------------------------------------- #
 #                             main funcs                              #
 # ------------------------------------------------------------------- #
@@ -93,22 +107,22 @@ def get_func_entry():
     func = func_entry.get()
 
     if func == "":
-        messagebox.showinfo(
-            "Error: #1", "La entrada de la función no puede estar vacía.")
+        text_error = "Error: #1. La entrada de la función no puede estar vacía."
+        approx_cal_label.config(text=text_error)
         return
 
     try:
-        if not('x' in func and have_only_x(func)):
+        if not('x' in func):  # and have_only_x(func)):
             raise SyntaxError
         func_sym = sym.sympify(func)
         print("IMPRESIÓN - Función Simbólica:", func_sym)
         return func_sym
     except SyntaxError:
-        messagebox.showinfo(
-            "Error: #2", "La función entrada únicamente debe contener la variable 'x'.")
+        text_error = "Error: #2. La función entrada únicamente debe contener la variable 'x'."
+        approx_cal_label.config(text=text_error)
     except:
-        messagebox.showinfo(
-            "Error: #3", "La sintaxis de la entrada fue incorrecta.")
+        text_error = "Error: #3. La sintaxis de la entrada fue incorrecta."
+        approx_cal_label.config(text=text_error)
 
 
 def get_a_entry():
@@ -123,16 +137,16 @@ def get_a_entry():
     a = a_entry.get()
 
     if a == "" or None:
-        messagebox.showinfo(
-            "Error: #4", "La entrada del valor 'a' no puede estar vacía.")
+        text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
+        approx_cal_label.config(text=text_error)
         return
 
     try:
         a = float(a)
         return a
     except ValueError:
-        messagebox.showinfo(
-            "Error: #5", "La entrada del valor 'a' debe ser un número.")
+        text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
+        approx_cal_label.config(text=text_error)
 
 
 def get_b_entry():
@@ -147,16 +161,16 @@ def get_b_entry():
     b = b_entry.get()
 
     if b == "" or None:
-        messagebox.showinfo(
-            "Error: #4", "La entrada del valor 'b' no puede estar vacía.")
+        text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
+        approx_cal_label.config(text=text_error)
         return
 
     try:
         b = float(b)
         return b
     except ValueError:
-        messagebox.showinfo(
-            "Error: #5", "La entrada del valor 'b' debe ser un número.")
+        text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
+        approx_cal_label.config(text=text_error)
 
 
 def get_points_entry():
@@ -171,16 +185,16 @@ def get_points_entry():
     points = str(points_entry.get())
 
     if points == "" or None:
-        messagebox.showinfo(
-            "Error: #4", "La entrada de 'Puntos a Utilizar' no puede estar vacía.")
+        text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
+        approx_cal_label.config(text=text_error)
         return
 
     try:
         points = int(points)
         return points
     except ValueError:
-        messagebox.showinfo(
-            "Error: #5", "La entrada del valor 'Puntos a Utilizar' debe ser un número entero.")
+        text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
+        approx_cal_label.config(text=text_error)
 
 
 def method_selection():
@@ -252,21 +266,30 @@ def calculate():
 
         elif method == "simpson_compuesto":
             n = get_points_entry()
-            ans = metodo.regla_simpson_compuesto(f, a, b, n)
-            approx_cal_label.config(text=ans[0])
-            error_cal_label.config(text=ans[1])
+            if validate_points_simpson(n):
+                ans = metodo.regla_simpson_compuesto(f, a, b, n)
+                approx_cal_label.config(text=ans[0])
+                error_cal_label.config(text=ans[1])
+            else:
+                raise SyntaxError
 
         elif method == "gaussianas":
             n = get_points_entry()
             ans = metodo.cuadraturas_gaussianas(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
+
     except ValueError:
-        messagebox.showinfo(
-            "Error: #6", "La entrada de 'a' no puede ser igual o mayor que la de 'b'.")
+        text_error = "Error: #6. La entrada de 'a' no puede ser igual o mayor que la de 'b'."
+        approx_cal_label.config(text=text_error)
+
+    except SyntaxError:
+        text_error = "Error: #7. La entrada del valor 'puntos' debe ser un número mayor a cinco e impar."
+        approx_cal_label.config(text=text_error)
+
     except:
-        print("EXCEPCIÓN - Error en la ejecucción de métodos.")
-        pass
+        text_error = "Error: #8. No se pudo calcular la respuesta. Vuelva a ingresar los datos."
+        approx_cal_label.config(text=text_error)
 
 
 # ------------------------------------------------------------------- #
