@@ -31,10 +31,13 @@ Semestre:
 # ------------------------------------------------------------------- #
 #                             libraries                               #
 # ------------------------------------------------------------------- #
+
 import parte1_p2 as metodo
 from tkinter import *
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from PIL import Image, ImageTk
+from sympy.calculus.util import function_range
+from sympy import *
 import sympy as sym
 
 
@@ -72,6 +75,24 @@ def have_only_x(entry):
     return True
 
 
+def is_domain_valid(f, a, b):
+    """
+    Validates that the function's domain is continuous
+    in the interval given by 'a' and 'b'.
+
+    :param f: sym
+    :param a: float
+    :param b: float
+    :return: boolean
+    """
+    x = Symbol('x')
+    if sym.Interval(a, b).intersection(function_range(f), x, S.Reals) != Interval(a, b):
+        print("IMPRESIÓN - Error: La función no es continua con el dominio.")
+        return False
+
+    return True
+
+
 def validate_points_simpson(num):
     """
     Validates that the entry must be bigger than 5 and
@@ -80,7 +101,6 @@ def validate_points_simpson(num):
     :param num: int
     :return: boolean
     """
-
     if num % 2 == 0 and 5 <= num:
         return True
 
@@ -120,9 +140,11 @@ def get_func_entry():
     except SyntaxError:
         text_error = "Error: #2. La función entrada únicamente debe contener la variable 'x'."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
     except:
         text_error = "Error: #3. La sintaxis de la entrada fue incorrecta."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
 
 
 def get_a_entry():
@@ -139,6 +161,7 @@ def get_a_entry():
     if a == "" or None:
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
         return
 
     try:
@@ -147,6 +170,7 @@ def get_a_entry():
     except ValueError:
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
 
 
 def get_b_entry():
@@ -163,6 +187,7 @@ def get_b_entry():
     if b == "" or None:
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
         return
 
     try:
@@ -171,6 +196,7 @@ def get_b_entry():
     except ValueError:
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
 
 
 def get_points_entry():
@@ -187,6 +213,7 @@ def get_points_entry():
     if points == "" or None:
         text_error = "Error: #4. La entrada del valor 'a' no puede estar vacía."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
         return
 
     try:
@@ -195,6 +222,7 @@ def get_points_entry():
     except ValueError:
         text_error = "Error: #5. La entrada del valor 'a' debe ser un número."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
 
 
 def method_selection():
@@ -228,6 +256,8 @@ def method_selection():
 
 
 def calculate():
+    approx_cal_label.config(text="")
+    error_cal_label.config(text="")
     try:
         method = method_selection()
         f = get_func_entry()
@@ -236,33 +266,42 @@ def calculate():
         print("IMPRESIÓN - Datos colectados (método, f, a, b): ",
               method, ",", f, ",", a, ",", b)
 
-        # TODO: Validación del dominio de la función, para saber si se puede integrar. #
+        #if not is_domain_valid(f, a, b):
+        #    text_error = "Error: #8. La función no es continua en el intervalo de intregación."
+        #    approx_cal_label.config(text=text_error)
+        #    error_cal_label.config(text="N/A")
+        #    return
 
         if b <= a:
-            raise ValueError
+            text_error = "Error: #6. La entrada de 'a' no puede ser igual o mayor que la de 'b'."
+            approx_cal_label.config(text=text_error)
+            error_cal_label.config(text="N/A")
+            return
 
         if method == "trapecio":
             ans = metodo.regla_trapecio(f, a, b)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
+            return
 
         elif method == "simpson":
             ans = metodo.regla_simpson(f, a, b)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
+            return
 
         elif method == "boole":
             ans = metodo.regla_boole(f, a, b)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
-
-        # TODO: Validación de metodo que solo recibe una cantidad impar de puntos. - (simpson_compuesto). #
+            return
 
         elif method == "trapecio_compuesto":
             n = get_points_entry()
             ans = metodo.regla_trapecio_compuesto(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
+            return
 
         elif method == "simpson_compuesto":
             n = get_points_entry()
@@ -270,26 +309,24 @@ def calculate():
                 ans = metodo.regla_simpson_compuesto(f, a, b, n)
                 approx_cal_label.config(text=ans[0])
                 error_cal_label.config(text=ans[1])
+                return
             else:
-                raise SyntaxError
+                text_error = "Error: #7. La entrada del valor 'puntos' debe ser un número mayor a cinco e impar."
+                approx_cal_label.config(text=text_error)
+                error_cal_label.config(text="N/A")
+                return
 
         elif method == "gaussianas":
             n = get_points_entry()
             ans = metodo.cuadraturas_gaussianas(f, a, b, n)
             approx_cal_label.config(text=ans[0])
             error_cal_label.config(text=ans[1])
-
-    except ValueError:
-        text_error = "Error: #6. La entrada de 'a' no puede ser igual o mayor que la de 'b'."
-        approx_cal_label.config(text=text_error)
-
-    except SyntaxError:
-        text_error = "Error: #7. La entrada del valor 'puntos' debe ser un número mayor a cinco e impar."
-        approx_cal_label.config(text=text_error)
+            return
 
     except:
-        text_error = "Error: #8. No se pudo calcular la respuesta. Vuelva a ingresar los datos."
+        text_error = "Error: #9. No se posible calcular la respuesta. Vuelva a ingresar los datos."
         approx_cal_label.config(text=text_error)
+        error_cal_label.config(text="N/A")
 
 
 # ------------------------------------------------------------------- #
@@ -323,23 +360,23 @@ def help_me():
 # main window #
 root = Tk()
 root.title("ANPI")
-root.geometry("800x900")
-root.minsize(800, 900)
+root.geometry("1000x1000")
+root.minsize(1000, 1000)
 root.resizable(width=NO, height=NO)
 
 # main canvas #
-root_canva = Canvas(root, width=800, height=900, bg="#FFFFFF")
+root_canva = Canvas(root, width=1000, height=1000, bg="#FFFFFF")
 root_canva.place(x=0, y=0)
 
 # title #
 root_title = Label(root_canva, text="Calculadora de Integrales Definidas", bg="#FFFFFF", fg="#000000",
                    font=("Times New Roman", 25))
-root_title.place(x=220, y=25)
+root_title.place(x=320, y=25)
 
 # image integrals #
 image_integ = load_image("imgs/integ_1.png")
 img = Label(root_canva, image=image_integ, bg="#FFFFFF")
-img.place(x=230, y=65)
+img.place(x=330, y=65)
 
 # ------------------------------------------------------------------- #
 #                               entries                               #
@@ -347,29 +384,29 @@ img.place(x=230, y=65)
 # function entry #
 func_label = Label(root_canva, text="f (x) = ", bg="#FFFFFF", fg="#000000",
                    font=("Times New Roman", 18))
-func_label.place(x=230, y=170)
+func_label.place(x=330, y=170)
 func_entry = Entry(root_canva, width=25, bg="#FFFFFF", fg="#000000")
-func_entry.place(x=300, y=170)
+func_entry.place(x=400, y=170)
 
 # limit a entry #
 a_label = Label(root_canva, text="a =", bg="#FFFFFF", fg="#000000",
                 font=("Times New Roman", 18))
-a_label.place(x=250, y=230)
+a_label.place(x=350, y=230)
 a_entry = Entry(root_canva, width=5, bg="#FFFFFF", fg="#000000")
-a_entry.place(x=300, y=230)
+a_entry.place(x=400, y=230)
 
 # limit b entry #
 b_label = Label(root_canva, text="b =", bg="#FFFFFF", fg="#000000",
                 font=("Times New Roman", 18))
-b_label.place(x=400, y=230)
+b_label.place(x=500, y=230)
 b_entry = Entry(root_canva, width=5, bg="#FFFFFF", fg="#000000")
-b_entry.place(x=450, y=230)
+b_entry.place(x=550, y=230)
 
 # ------------------------------------------------------------------- #
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 1 #
-line_1 = Frame(root_canva, width=780, height=1, bg="black")
+line_1 = Frame(root_canva, width=980, height=1, bg="black")
 line_1.place(x=10, y=280)
 
 # ------------------------------------------------------------------- #
@@ -377,7 +414,7 @@ line_1.place(x=10, y=280)
 # ------------------------------------------------------------------- #
 # tabs #
 tab_control = ttk.Notebook(root_canva, width=500, height=250)
-tab_control.place(x=130, y=300)
+tab_control.place(x=230, y=300)
 
 # variable for selecting the radio button #
 method_selected = IntVar()
@@ -437,7 +474,7 @@ points_entry.place(x=400, y=100)
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 2 #
-line_2 = Frame(root_canva, width=780, height=1, bg="black")
+line_2 = Frame(root_canva, width=980, height=1, bg="black")
 line_2.place(x=10, y=630)
 
 # ------------------------------------------------------------------- #
@@ -446,7 +483,7 @@ line_2.place(x=10, y=630)
 # calculate button #
 calculate_button = Button(root_canva, command=calculate, borderwidth=0, text="Calcular", bg="#FF0000", fg="#FF0000",
                           font=("Times New Roman", 20))
-calculate_button.place(x=340, y=650)
+calculate_button.place(x=440, y=650)
 
 # approximation label #
 approx_title_label = Label(root_canva, text="Aproximación =", bg="#FFFFFF", fg="#000000",
@@ -472,7 +509,7 @@ error_cal_label.place(x=345, y=750)
 #                           division line                             #
 # ------------------------------------------------------------------- #
 # horizontal line 2 #
-line_2 = Frame(root_canva, width=780, height=1, bg="black")
+line_2 = Frame(root_canva, width=980, height=1, bg="black")
 line_2.place(x=10, y=830)
 
 # ------------------------------------------------------------------- #
@@ -481,7 +518,7 @@ line_2.place(x=10, y=830)
 # help button #
 help_button = Button(root_canva, command=help_me, text="Ayuda", borderwidth=0, bg="#FFFFFF", fg="#0000FF",
                      font=("Times New Roman", 20))
-help_button.place(x=345, y=850)
+help_button.place(x=445, y=850)
 
 # ------------------------------------------------------------------- #
 #                               mainloop                              #
