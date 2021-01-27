@@ -73,7 +73,7 @@ def open_documentation():
     Open online documentation/manual of the program.
     """
     new = 1
-    url = "https://www.google.com"
+    url = "https://drive.google.com/file/d/13COWbbNmauyPg5QLmRtyWObpEQR-6rnI/view?usp=sharing"
 
     webbrowser.open(url, new=new)
 
