@@ -271,7 +271,8 @@ def regla_simpson_compuesto(f, a, b, N):
 # ------------------------------------------------------------------- #
 def polinomio(n):
     """
-    Devuelve un polinomio.
+    Recibe un número de puntos y contruye el
+    polinomio de Legendre.
 
     :param n:
     :return: y

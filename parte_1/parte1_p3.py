@@ -128,11 +128,11 @@ def get_a_entry():
         return
 
     try:
-        a = int(a)
+        a = float(a)
         return a
     except ValueError:
         messagebox.showinfo(
-            "Error: #5", "La entrada del valor 'a' debe ser un número entero.")
+            "Error: #5", "La entrada del valor 'a' debe ser un número.")
 
 
 def get_b_entry():
@@ -152,11 +152,11 @@ def get_b_entry():
         return
 
     try:
-        b = int(b)
+        b = float(b)
         return b
     except ValueError:
         messagebox.showinfo(
-            "Error: #5", "La entrada del valor 'b' debe ser un número entero.")
+            "Error: #5", "La entrada del valor 'b' debe ser un número.")
 
 
 def get_points_entry():
