@@ -48,6 +48,9 @@ from sympy.sets import Interval
 from sympy.calculus.util import function_range
 import sympy as sym
 
+# utilizar navegador web#
+import webbrowser
+
 
 # ------------------------------------------------------------------- #
 #                             misc funcs                              #
@@ -63,6 +66,16 @@ def load_image(file):
     load = Image.open(file)
     image = ImageTk.PhotoImage(load)
     return image
+
+
+def open_documentation():
+    """
+    Open online documentation/manual of the program.
+    """
+    new = 1
+    url = "https://www.google.com"
+
+    webbrowser.open(url, new=new)
 
 
 def have_only_x(entry):
@@ -367,7 +380,8 @@ def calculate():
 # help window #
 def help_me():
     """
-    TODO: Realizar ventana de ayuda.
+    About window. Contains information of the authors and link to
+    see the documentation/manual of the program.
     """
     # secondary window #
     help_window = Toplevel()
@@ -383,7 +397,10 @@ def help_me():
                       font=("Times New Roman", 25))
     help_view.place(x=170, y=25)
 
-    print("Help me!")
+    # documentation/manual #
+    doc_button = Button(help_window, command=open_documentation, borderwidth=0, text="Ver Manual", bg="#FF0000",
+                        fg="#FF0000", font=("Times New Roman", 20))
+    doc_button.place(x=170, y=300)
 
 
 # ------------------------------------------------------------------- #
