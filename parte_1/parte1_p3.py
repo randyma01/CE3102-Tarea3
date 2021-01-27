@@ -394,39 +394,69 @@ def help_me():
     see the documentation/manual of the program.
     """
 
-    # reading data to display #
-    text_file = open("about.txt", "r")
-    data = text_file.read()
-    text_file.close()
-
     # secondary window #
     help_window = Toplevel()
     help_window.title("Guía de Uso")
-    help_window.minsize(400, 400)
+    help_window.minsize(600, 500)
     help_window.resizable(width=NO, height=NO)
 
-    help_canva = Canvas(help_window, width=700, height=700, bg="#FFFFFF")
-    help_canva.place(x=0, y=0)
-
     # title #
-    help_view = Label(help_canva, text="Guía de Ayuda", bg="#FFFFFF", fg="#000000",
-                      font=("Times New Roman", 25))
-    help_view.place(x=120, y=25)
+    help_view = Label(help_window, text="Guía de Ayuda", font=("Times New Roman", 25))
+    help_view.place(x=200, y=20)
 
-    # text of the about information #
-    about_text = Text(help_canva, width=100, height=100, font=("Times New Roman", 18))
-    about_text.place(x=0, y=80)
-    about_text.insert(END, data)
+    # version #
+    help_view = Label(help_window, text="CID v.1.0.0", font=("Times New Roman", 16))
+    help_view.place(x=235, y=70)
+
+    # horizontal line 1 #
+    help_line_1 = Frame(help_window, width=580, height=1, bg="black")
+    help_line_1.place(x=10, y=100)
+
+    # authors title #
+    authors_title = Label(help_window, text="Autores:", font=("Times New Roman", 18))
+    authors_title.place(x=250, y=125)
+
+    # author 1 #
+    authors_1 = Label(help_window, text="Cristian Marín", font=("Times New Roman", 18))
+    authors_1.place(x=120, y=155)
+
+    # author 2 #
+    authors_2 = Label(help_window, text="Fiorella Delgado", font=("Times New Roman", 18))
+    authors_2.place(x=320, y=155)
+
+    # author 3 #
+    authors_3 = Label(help_window, text="Karla Sanchez", font=("Times New Roman", 18))
+    authors_3.place(x=120, y=210)
+
+    # author 4 #
+    authors_4 = Label(help_window, text="Randy Martínez", font=("Times New Roman", 18))
+    authors_4.place(x=320, y=210)
+
+    # horizontal line 2 #
+    help_line_2 = Frame(help_window, width=580, height=1, bg="black")
+    help_line_2.place(x=10, y=270)
+
+    # contact label #
+    contact = Label(help_window, text="Contacto: randyma01@gmail.com", font=("Times New Roman", 18))
+    contact.place(x=160, y=300)
+
+    # warning label #
+    warning = Label(help_window, text="Programa con fines académicos.", font=("Times New Roman", 18))
+    warning.place(x=170, y=330)
+
+    # horizontal line 3 #
+    help_line_3 = Frame(help_window, width=580, height=1, bg="black")
+    help_line_3.place(x=10, y=390)
 
     # documentation/manual #
     doc_button = Button(help_window, command=open_documentation, borderwidth=0, text="Ver Manual", bg="#FF0000",
                         fg="#000000", font=("Times New Roman", 20))
-    doc_button.place(x=130, y=280)
+    doc_button.place(x=100, y=420)
 
     # source code #
     code_button = Button(help_window, command=visit_repo, borderwidth=0, text="Ver Código Fuente",
                          bg="#FF0000", fg="#000000", font=("Times New Roman", 20))
-    code_button.place(x=110, y=330)
+    code_button.place(x=300, y=420)
 
 
 # ------------------------------------------------------------------- #
