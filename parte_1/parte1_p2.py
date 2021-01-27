@@ -420,5 +420,5 @@ def regla_boole(f, a, b):
         s1 = [abs(dx6.subs(x, s0))]
 
     # obtener el error
-    er = ((b - a) / N) ** 7 * (8 / 945) * max(s1)
+    er = (a * (b - a) / (N - 1)) ** 7 * (8 / 945) * max(s1)
     return [I, er]
